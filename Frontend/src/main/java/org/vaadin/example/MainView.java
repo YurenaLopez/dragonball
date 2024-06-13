@@ -25,9 +25,7 @@ public class MainView extends VerticalLayout {
     Grid<Characters> grid = new Grid<>(Characters.class,false);
 
     public MainView(@Autowired CharactersService service) {
-        // Crear un Grid
-        // Configurar columnas
-        // Crear el contenido de cada pestaña
+        // Creamos el release 1.0
         grid.addColumn(Characters::getId).setHeader("id").setAutoWidth(true);;
         grid.addColumn(Characters::getName).setHeader("name").setAutoWidth(true);;
         grid.addColumn(Characters::getKi).setHeader("ki").setAutoWidth(true);;

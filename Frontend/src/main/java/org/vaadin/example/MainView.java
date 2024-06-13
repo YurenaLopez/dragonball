@@ -1,5 +1,7 @@
 package org.vaadin.example;
 
+import com.nimbusds.jose.shaded.gson.Gson;
+import com.vaadin.flow.component.grid.Grid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.Key;
@@ -11,54 +13,68 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
-/**
- * A sample Vaadin view class.
- * <p>
- * To implement a Vaadin view just extend any Vaadin component and use @Route
- * annotation to announce it in a URL as a Spring managed bean.
- * <p>
- * A new instance of this class is created for every new user and every browser
- * tab/window.
- * <p>
- * The main view contains a text field for getting the user name and a button
- * that shows a greeting message in a notification.
- */
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.List;
+
 @Route
 public class MainView extends VerticalLayout {
+    Grid<Characters> grid = new Grid<>(Characters.class,false);
 
-    /**
-     * Construct a new Vaadin view.
-     * <p>
-     * Build the initial UI state for the user accessing the application.
-     *
-     * @param service
-     *            The message service. Automatically injected Spring managed
-     *            bean.
-     */
-    public MainView(@Autowired GreetService service) {
+    public MainView(@Autowired CharactersService service) {
+        // Crear un Grid
+        // Configurar columnas
+        // Crear el contenido de cada pestaña
+        grid.addColumn(Characters::getId).setHeader("id").setAutoWidth(true);;
+        grid.addColumn(Characters::getName).setHeader("name").setAutoWidth(true);;
+        grid.addColumn(Characters::getKi).setHeader("ki").setAutoWidth(true);;
+        grid.addColumn(Characters::getMaxKi).setHeader("maxKi").setAutoWidth(true);;
+        grid.addColumn(Characters::getRace).setHeader("race").setAutoWidth(true);;
+        grid.addColumn(Characters::getGender).setHeader("gender").setAutoWidth(true);;
 
-        // Use TextField for standard text input
-        TextField textField = new TextField("Your name");
-        textField.addClassName("bordered");
+        // Añadir el Grid al layout principal
+        add(grid);
+        loadCharacters();
 
-        // Button click listeners can be defined as lambda expressions
-        Button button = new Button("Say hello", e -> {
-            add(new Paragraph(service.greet(textField.getValue())));
-        });
-
-        // Theme variants give you predefined extra styles for components.
-        // Example: Primary button has a more prominent look.
-        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        // You can specify keyboard shortcuts for buttons.
-        // Example: Pressing enter in this view clicks the Button.
-        button.addClickShortcut(Key.ENTER);
-
-        // Use custom CSS classes to apply styling. This is defined in
-        // styles.css.
-        addClassName("centered-content");
-
-        add(textField, button);
+    }
+    private void loadCharacters() {
+        // Llamada al controlador para obtener los datos de nationalData
+        List<Characters> characters = getCharactersFromController();
+        grid.setItems(characters);
     }
 
+    private List<Characters> getCharactersFromController() {
+        String url = String.format("http://localhost:8080/characters");
+
+        try {
+            // Configurar cliente HTTP
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .build();
+
+            // Hacer la llamada GET
+            HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                // Convertir la respuesta JSON a una lista de NationalDataFile
+                Characters[] ships = new Gson().fromJson(response.body(), Characters[].class);
+                return Arrays.asList(ships);
+            } else {
+                // En caso de error mostrar mensaje
+                System.out.println("Error al obtener datos: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            // Manejar excepcion
+            e.printStackTrace();
+        }
+
+        // En caso de error
+        return List.of();
+    }
 }
+
+

@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "id": 1,
     "name": "Goku",
     "ki": "60.000.000",
     "maxKi": "90 Septillion",
@@ -8,7 +8,7 @@
     "gender": "Male"
   },
   {
-    "id": "2",
+    "id": 2,
     "name": "Vegeta",
     "ki": "54.000.000",
     "maxKi": "19.84 Septillion",
@@ -16,7 +16,7 @@
     "gender": "Male"
   },
   {
-    "id": "3",
+    "id": 3,
     "name": "Piccolo",
     "ki": "2.000.000",
     "maxKi": "500.000.000",
@@ -24,7 +24,7 @@
     "gender": "Male"
   },
   {
-    "id": "4",
+    "id": 4,
     "name": "Bulma",
     "ki": "0",
     "maxKi": "0",
@@ -32,7 +32,7 @@
     "gender": "Female"
   },
   {
-    "id": "5",
+    "id": 5,
     "name": "Freezer",
     "ki": "530.000",
     "maxKi": "52.71 Septillion",
@@ -40,7 +40,7 @@
     "gender": "Male"
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Zarbon",
     "ki": "20.000",
     "maxKi": "30.000",
@@ -48,7 +48,7 @@
     "gender": "Male"
   },
   {
-    "id": "7",
+    "id": 7,
     "name": "Dodoria",
     "ki": "18.000",
     "maxKi": "20.000",
@@ -56,35 +56,11 @@
     "gender": "Male"
   },
   {
-    "id": "8",
+    "id": 8,
     "name": "Ginyu",
     "ki": "9.000",
     "maxKi": "25.000",
     "race": "Frieza Race",
-    "gender": "Male"
-  },
-  {
-    "id": "9",
-    "name": "Celula",
-    "ki": "250.000.000",
-    "maxKi": "5 Billion",
-    "race": "Android",
-    "gender": "Male"
-  },
-  {
-    "id": "10",
-    "name": "Gohan",
-    "ki": "45.000.000",
-    "maxKi": "40 septillion",
-    "race": "Saiyan",
-    "gender": "Male"
-  },
-  {
-    "id": "5bc4a1f1-a150-48cf-bb44-0dfc0b91d4b5",
-    "name": "Iván",
-    "ki": "40.000.000",
-    "maxKi": "30 Septillion",
-    "race": "Freak",
     "gender": "Male"
   }
 ]

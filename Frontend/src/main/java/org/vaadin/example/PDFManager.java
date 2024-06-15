@@ -6,39 +6,23 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 
+import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 public class PDFManager {
-    private String savePath;
-
-    public PDFManager() {
-        try {
-            // Cargar la configuración desde application.properties
-            Properties prop = new Properties();
-            InputStream input = PDFManager.class.getClassLoader().getResourceAsStream("application.properties");
-            if (input != null) {
-                prop.load(input);
-                savePath = prop.getProperty("pdf.savePath");
-            } else {
-                throw new RuntimeException("No se pudo encontrar el archivo de configuración application.properties");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException("Error al cargar la configuración desde application.properties", ex);
-        }
-    }
-
     public void GenerarPDF(String name, Characters character) {
         try {
-            // Construir la ruta completa al archivo PDF
-            String fullPath = savePath + name + ".pdf";
+            // Obtener la ruta absoluta del directorio donde se encuentra la clase PDFManager
+            String classLocation = PDFManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            File classLocationFile = new File(classLocation);
+            String projectRoot = classLocationFile.getParentFile().getParentFile().getParentFile().getParent(); // Subir cuatro niveles
+
+            // Construir la ruta completa al archivo PDF en la raíz del proyecto
+            String savePath = projectRoot + File.separator + "dragonball" + File.separator + name + ".pdf";
 
             // Crear el archivo PDF
             Document doc = new Document(PageSize.A4, 50, 50, 100, 72);
-            PdfWriter.getInstance(doc, new FileOutputStream(fullPath));
+            PdfWriter.getInstance(doc, new FileOutputStream(savePath));
             doc.open();
 
             // Agregar título al documento
@@ -57,7 +41,7 @@ public class PDFManager {
             // Cerrar el documento
             doc.close();
 
-            System.out.println("PDF generado exitosamente en: " + fullPath);
+            System.out.println("PDF generado exitosamente en: " + savePath);
         } catch (Exception e) {
             e.printStackTrace();
         }
